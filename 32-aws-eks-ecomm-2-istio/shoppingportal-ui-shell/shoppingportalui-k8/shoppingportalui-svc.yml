@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shoppingportalui-svc
+  namespace: shoppingportal
+  labels:
+    app: shoppingportaluisvc
+spec:
+  selector:
+        app: shoppingportalui
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: my-http-port

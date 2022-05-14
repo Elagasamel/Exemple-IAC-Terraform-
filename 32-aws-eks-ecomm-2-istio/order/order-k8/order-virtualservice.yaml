@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: order-vs
+  namespace: shoppingportal  
+spec:
+  gateways:
+  - shoppingportal-gateway
+  hosts:
+   - "*"
+  http:
+  - match:
+    - uri:
+        prefix: /orderms
+    route:
+    - destination:
+        host: order-svc.shoppingportal.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: /orderui
+    route:
+    - destination:
+        host: orderui-svc.shoppingportal.svc.cluster.local
+        port:
+          number: 80          

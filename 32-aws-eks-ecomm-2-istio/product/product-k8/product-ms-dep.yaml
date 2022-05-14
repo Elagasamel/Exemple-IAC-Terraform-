@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productms-deploy
+  namespace: shoppingportal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      zone: prod
+      app: productms
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        version: "1.0.0"
+        release: stable
+        tier: be
+        zone: prod
+        managed-by: m2
+        app: productms
+    spec:
+      containers:
+        - name: productms-ctr
+          image: metamagicglobal/productservice_k8
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 8082
+          env:
+          - name: MONO_HOST
+            valueFrom:
+              secretKeyRef: 
+                name: mongosecret
+                key: mongohost
+          - name: MONO_PORT
+            valueFrom:
+              secretKeyRef: 
+                name: mongosecret
+                key: mongoport
+          - name: REVIEW_APP_BASE_URL
+            valueFrom:
+              secretKeyRef: 
+                name: productsecret
+                key: review_app_base_url                

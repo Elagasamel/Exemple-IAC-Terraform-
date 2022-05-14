@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: product-viewer
+  namespace: shoppingportal
+spec:
+  selector:
+    matchLabels:
+      name: productms
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        methods: ["GET"]

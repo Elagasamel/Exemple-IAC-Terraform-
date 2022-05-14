@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-review-service
+  namespace: shoppingportal
+  labels:
+    app: productreview-svc
+spec:
+  selector:
+    app: productreview-svc
+  type: ClusterIP
+  ports:
+   - port: 80
+     targetPort: 8080
+     name: http

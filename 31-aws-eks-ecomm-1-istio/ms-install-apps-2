@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "shoppingportal Service II : Installations"
+
+echo "4.1 Install the Apps:  (Productreview)"
+echo "..."
+
+kubectl apply  --filename App-2/shoppingportal2-ns.yaml
+kubectl apply  --filename App-2/sa-define.yaml
+kubectl apply  --filename App-2/productreview-shoppingportal2.yaml 
+kubectl apply  --filename App-2/productreview-shoppingportal2-svc.yaml
+kubectl apply  --filename App-2/productreview-shoppingportal2-portsvc.yaml
+
+echo "..."
+

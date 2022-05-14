@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: shippingservice-retry
+  namespace: shoppingportal    
+spec:
+  hosts:
+  - order-service.shoppingportal.svc.cluster.local
+  http:
+    - route:
+      - destination:
+          host: order-service.shoppingportal.svc.cluster.local
+      retries:
+        attempts: 3
+        perTryTimeout: 3s
+        retryOn: gateway-error,connect-failure,refused-stream

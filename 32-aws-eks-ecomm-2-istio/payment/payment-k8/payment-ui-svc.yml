@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paymentui-svc
+  namespace: shoppingportal
+  labels:
+    app: paymentui     
+spec:
+  selector:
+        app: paymentui          
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: my-http-port

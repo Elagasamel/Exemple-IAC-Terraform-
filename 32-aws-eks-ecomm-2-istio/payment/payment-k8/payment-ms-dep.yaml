@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentms-deploy
+  namespace: shoppingportal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      zone: prod
+      app: paymentms
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        version: v1
+        release: stable
+        tier: be
+        zone: prod
+        managed-by: m2
+        app: paymentms
+    spec:
+      containers:
+        - name: paymentms-ctr
+          image: metamagicglobal/paymentservice_k8
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 8082
+          env:
+          - name: MONO_HOST
+            valueFrom:
+              secretKeyRef: 
+                name: mongosecret
+                key: mongohost
+          - name: MONO_PORT
+            valueFrom:
+              secretKeyRef: 
+                name: mongosecret
+                key: mongoport
+          - name: ORDER_APP_BASE_URL
+            valueFrom:
+              secretKeyRef: 
+                name: ordersecret
+                key: order_app_base_url                                
+          - name: SHOPPINGCART_APP_BASE_URL
+            valueFrom:
+              secretKeyRef: 
+                name: ordersecret
+                key: shoppingcart_app_base_url

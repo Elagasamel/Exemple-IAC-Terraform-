@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productui-deploy-canary
+  namespace: shoppingportal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      zone: prod
+      app: productui
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        version: v2
+        release: stable
+        tier: fe
+        zone: prod
+        managed-by: m2
+        app: productui
+    spec:
+      containers:
+        - name: productui-ctr
+          image: metamagicglobal/productui_v2:k8 
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shopping-cart-query-service
+  namespace: shoppingportal
+  labels:
+    app: sp-cart-query-svc
+spec:
+  selector:
+    app: sp-cart-query-svc
+  type: ClusterIP
+  ports:
+   - port: 80
+     targetPort: 8080
+     name: http

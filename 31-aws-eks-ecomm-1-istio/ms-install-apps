@@ -1,0 +1,33 @@
+#!/bin/bash
+
+echo "shoppingportal Service I : Installations"
+
+echo "4.1 Install the Apps: (UI, Product, Productreview)"
+echo "..."
+kubectl apply  --filename App/shopping-ns.yaml
+kubectl apply  --filename App/sa-define.yaml
+kubectl apply  --filename App/product-v1.yaml
+kubectl apply  --filename App/product-service.yaml
+kubectl apply  --filename App/productreview-v1.yaml 
+kubectl apply  --filename App/productreview-service.yaml
+kubectl apply  --filename App/ui-v1.yaml
+kubectl apply  --filename App/ui-v2.yaml
+kubectl apply  --filename App/ui-service.yaml
+
+echo "...."
+
+echo "4.2 Install the Traffic Routes (Gateway, Virtual Service, Destination Rules)"
+kubectl apply  --filename 1-Traffic/shoppingportal-1-gw.yaml
+kubectl apply  --filename 1-Traffic/shoppingportal-2-virtualservice.yaml
+kubectl apply  --filename 1-Traffic/shoppingportal-3-product-destination.yaml
+kubectl apply  --filename 1-Traffic/shoppingportal-4-ui-destination.yaml
+
+
+echo "...."
+kubectl config set-context $(kubectl config current-context) --namespace=shoppingportal
+
+echo "........"
+echo "4.4 Show Ingress, Services, Pods, HPA"
+kubectl get ing,svc,pods,hpa -o wide
+echo "............ Setup Complete!"
+echo

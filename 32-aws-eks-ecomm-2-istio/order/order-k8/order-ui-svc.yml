@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderui-svc
+  namespace: shoppingportal
+  labels:
+    app: orderui     
+spec:
+  selector:
+        app: orderui          
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: my-http-port

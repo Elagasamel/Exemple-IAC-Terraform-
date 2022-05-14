@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: cluster-issuer
+spec:
+  acme:
+    email: deepali.arvind@metamagic.in # Do not use example.com domain email. Cert-Manager will not issue Certificate even if other configurations are correct
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: cluster-issuer
+    solvers:
+    - http01:
+        ingress:
+          class: istio

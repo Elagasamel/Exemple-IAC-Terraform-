@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: payment-viewer
+  namespace: shoppingportal
+spec:
+  selector:
+    matchLabels:
+      app: payment-svc
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        methods: ["GET"]

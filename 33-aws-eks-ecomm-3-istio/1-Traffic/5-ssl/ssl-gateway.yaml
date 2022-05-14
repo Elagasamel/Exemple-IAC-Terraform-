@@ -1,0 +1,28 @@
+kind: Gateway
+metadata:
+  name: shoppingportal-gateway
+  namespace: shoppingportal
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+    tls:
+      httpsRedirect: true # sends 301 redirect for http requests
+  - port:
+      name: https-default
+      number: 443
+      protocol: HTTPS
+    hosts:
+      - '*'
+    tls:
+      credentialName: ingress-cert # this should match with Certificate secretName
+      mode: SIMPLE
+      privateKey: sds
+      serverCertificate: sds
+      

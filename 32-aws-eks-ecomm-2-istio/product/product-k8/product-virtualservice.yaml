@@ -1,0 +1,40 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: product-vs
+  namespace: shoppingportal  
+spec:
+  gateways:
+  - shoppingportal-gateway
+  hosts:
+   - "*"
+  http:
+  - match:
+    - uri:
+        prefix: /productms
+    route:
+    - destination:
+        host: product-svc.shoppingportal.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: /productui
+      headers:
+        user-agent:
+          regex: ".*Firefox.*"
+    route:
+    - destination:
+        host: productui-svc.shoppingportal.svc.cluster.local
+        subset: canary # match v2 only
+        port:
+          number: 80                   
+  - match:
+    - uri:
+        prefix: /productui
+    route:
+    - destination:
+        host: productui-svc.shoppingportal.svc.cluster.local
+        subset: stable # match v1 only
+        port:
+          number: 80

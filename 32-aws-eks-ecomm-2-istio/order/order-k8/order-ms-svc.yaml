@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-svc
+  namespace: shoppingportal
+spec:
+  selector: 
+    app: orderms        
+  ports:
+  - protocol: TCP
+    targetPort: 8082
+    port: 80
+    name: http

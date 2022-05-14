@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: shoppingportal-vs-weightage
+  namespace: shoppingportal  
+spec:
+  gateways:
+  - shoppingportal-gateway
+  hosts:
+   - "*"
+  http:
+  - match:
+    - uri:
+        prefix: /ui
+    route:
+    - destination:
+        host: ms-sp-ui-svc.shoppingportal.svc.cluster.local
+        subset: canary # match v2 only
+        port:
+          number: 80  
+      weight: 20 
+    - destination:
+        host: ms-sp-ui-svc.shoppingportal.svc.cluster.local
+        subset: stable # match v2 only
+        port:
+          number: 80
+      weight: 80            

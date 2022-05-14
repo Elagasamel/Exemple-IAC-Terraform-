@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: sp-cart-enhancer-viewer
+  namespace: shoppingportal
+spec:
+  selector:
+    matchLabels:
+      app: sp-cart-enhancer-svc
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        methods: ["GET"]

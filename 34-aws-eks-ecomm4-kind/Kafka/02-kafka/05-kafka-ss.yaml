@@ -1,0 +1,40 @@
+   
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kafka
+  namespace: shoppingportal
+spec:
+  selector:
+    matchLabels:
+      app: kafka
+  serviceName: "kafka"
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: broker
+        image: metamagic/kafka:k8
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9092
+          name: plaintext        
+        env:
+          - name: ID
+            value: "0"
+          - name: LISTENSER
+            value: "PLAINTEXT://a33a8715a977d4abdad57667ef923eae-1718841730.us-east-2.elb.amazonaws.com:9092"        
+        volumeMounts:
+        - name: storage
+          mountPath: /tmp/kafka/
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: kafka-pvc

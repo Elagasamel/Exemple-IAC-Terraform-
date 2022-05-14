@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: sp-cart-query-viewer
+  namespace: shoppingportal
+spec:
+  selector:
+    matchLabels:
+      app: sp-cart-query-svc
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        methods: ["GET"]

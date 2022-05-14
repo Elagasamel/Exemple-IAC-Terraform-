@@ -1,0 +1,31 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: shoppingportal-vs
+  namespace: shoppingportal  
+spec:
+  gateways:
+  - shoppingportal-gateway
+  hosts:
+   - "*"
+  http:
+  - match:
+    - uri:
+        prefix: /ui
+    route:
+    - destination:
+        host: k8uiworkshopservice.shoppingportal.svc.cluster.local
+        port:
+          number: 80
+    fault: #This will put delay of 2 sec for every request to productreview service
+        delay:
+          percentage: 
+            value: 100
+          fixedDelay: 40s 
+    # Below Fault example, puts delay of 2 second and abort 10 percentage of request with 400 request
+    # fault: 
+        # delay:
+          # fixedDelay: 2s 
+          # abort:
+              # percent: 10
+              # httpStatus: 400

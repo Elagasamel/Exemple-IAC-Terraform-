@@ -1,0 +1,10 @@
+.metadata/*
+.recommenders/caches/identified-project-coordinates.json
+.recommenders/caches/manual-mappings.json
+RemoteSystemsTempFiles/.project
+.DS_Store
+
+**/dist/**
+**/node_modules/**
+**/package-lock.json
+**/*.tgz

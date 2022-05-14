@@ -1,0 +1,8 @@
+  kind: Service
+  apiVersion: v1
+  metadata:
+    name: kafka-svc
+    namespace: shoppingportal
+  spec:
+    type: ExternalName
+    externalName: node1.arivu.in

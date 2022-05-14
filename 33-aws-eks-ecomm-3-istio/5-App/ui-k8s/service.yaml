@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-sp-ui-svc
+  namespace: shoppingportal
+  labels:
+    app: shoppingportalui
+spec:
+  selector:
+    app: shoppingportalui
+  type: ClusterIP
+  ports:
+   - port: 80
+     targetPort: 80
+     name: http

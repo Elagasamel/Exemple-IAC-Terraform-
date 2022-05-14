@@ -1,0 +1,33 @@
+#!/bin/bash
+
+echo "Mock Service : Installations"
+echo "4.1 Install the Apps: (UI, Cart, Order, Payment)"
+kubectl apply  --filename App/lambda-namespace.yaml
+# kubectl apply  --filename App/lambda-ingress.yaml
+kubectl apply  --filename App/ws-deploy.yaml
+kubectl apply  --filename App/ws-service.yaml
+kubectl apply  --filename App/cart-deploy.yaml
+kubectl apply  --filename App/cart-service.yaml
+kubectl apply  --filename App/order-deploy-v1.yaml --record
+kubectl apply  --filename App/order-service.yaml
+kubectl apply  --filename App/order-hpa.yaml
+kubectl apply  --filename App/payment-deploy.yaml
+kubectl apply  --filename App/payment-service.yaml
+
+echo "4.2 Install the Traffic Routes (Gateway, Virtual Service, Destination Rules)"
+kubectl apply  --filename 1-Traffic/lambda-gateway.yaml
+kubectl apply  --filename 1-Traffic/cart-vs.yaml
+kubectl apply  --filename 1-Traffic/order-vs.yaml
+kubectl apply  --filename 1-Traffic/order-destinationrule.yaml
+kubectl apply  --filename 1-Traffic/payment-vs.yaml
+kubectl apply  --filename 1-Traffic/ws-vs.yaml
+
+echo "...."
+echo "4.3 Switch the Namespace to Lambda"
+kubectl config set-context $(kubectl config current-context) --namespace=lambda
+
+echo "........"
+echo "4.4 Show Ingress, Services, Pods, HPA"
+kubectl get ing,svc,pods,hpa -o wide
+echo "............ Setup Complete!"
+echo

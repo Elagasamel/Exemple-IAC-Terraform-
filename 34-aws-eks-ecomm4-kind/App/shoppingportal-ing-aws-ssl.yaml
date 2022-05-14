@@ -1,0 +1,81 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: workshop-ingress
+  namespace: shoppingportal
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:180789647333:certificate/9f042b5d-86fd-4fad-96d0-c81c5abc71e1
+spec:
+  tls:
+  - secretName: ssl-private
+  rules:
+  - host: k8demo.arivu.com
+    http:
+      paths:
+      - path: /ui/
+        pathType: Prefix
+        backend:
+          service:
+            name: ms-sp-ui-svc
+            port: 
+             number: 80
+      - path: /product-service/
+        pathType: Prefix
+        backend:
+          service:
+            name: product-service
+            port: 
+              number: 80
+      - path: /product-review-service/
+        pathType: Prefix
+        backend:
+          service:
+            name: product-review-service
+            port: 
+              number: 80
+      - path: /payment-service/
+        pathType: Prefix
+        backend:
+           service:    
+             name: payment-service
+             port: 
+               number: 80 
+      - path: /user-svc/
+        pathType: Prefix
+        backend:
+          service:
+            name: user-svc
+            port: 
+              number: 80
+      - path: /order-service/
+        pathType: Prefix
+        backend:
+          service:
+            name: order-service
+            port: 
+              number: 80
+      - path: /shopping-cart-cmd-service/
+        pathType: Prefix
+        backend:
+          service:
+            name: shopping-cart-cmd-service
+            port: 
+              number: 80
+      - path: /shopping-cart-query-service/
+        pathType: Prefix
+        backend:
+          service:
+            name: shopping-cart-query-service
+            port: 
+              number: 80  
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: zipkin-svc
+            port: 
+              number: 80                                                   

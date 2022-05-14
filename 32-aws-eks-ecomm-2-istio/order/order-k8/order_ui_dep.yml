@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderui-deploy
+  namespace: shoppingportal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      zone: prod
+      app: orderui
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        version: "1.0.0"
+        release: stable
+        tier: fe
+        zone: prod
+        managed-by: m2
+        app: orderui
+    spec:
+      containers:
+        - name: orderui-ctr
+          image: metamagicglobal/orderui:k8 
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80                                  

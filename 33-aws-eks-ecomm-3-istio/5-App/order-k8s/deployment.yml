@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-order-deploy
+  namespace: shoppingportal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      zone: prod
+      app: order-svc
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        name: order-svc
+        version: v1
+        release: stable
+        tier: fe
+        zone: prod
+        managed-by: m2
+        app: order-svc
+    spec:
+      containers:
+        - name: ms-order-deploy-ctr
+          image: metamagic/ms-order-service:1.0 
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080           
+          env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: "prod"        
